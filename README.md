@@ -38,21 +38,27 @@ It uses SSH to synchronize settings, packages and directories to get a project u
 
 ### Set up the script
 
-1. Add the script under a new folder in the root of your project, ex: `.syncpi/`
+1. Add the `sync.sh` script under a new folder in the root of your project, such as `.syncpi/`
 
-2. Copy and rename the `.env.sample` to `.env` in the new folder
+2. Copy and rename the `.env.sample` to `.env` in the same folder
 
    - Set the value of `SSH_USER` to the Pi's username (ex: `pi`)
    - Set the value of `SSH_SERVER` to the Pi's hostname (ex: `raspberrypi.local`)
-   - Additional default values in the `.env.sample` file can be defined for sharing the project
+   - Additional default values in the `.env.sample` file can be saved for sharing the project
 
-3. Run the sync script to create the missing configuration files:
+3. Mark the script as executable:
 
    ```
-   ./.syncpi/sync.sh
+   chmod +x sync.sh
    ```
 
-4. If requested, log in to the device to add your SSH public key
+4. Run the sync script to create the configuration files:
+
+   ```
+   ./sync.sh
+   ```
+
+5. If requested, log in to the device to add your SSH public key
 
    - If a public key hasn't been created yet, you can make a new one by running this command in the terminal:
 
