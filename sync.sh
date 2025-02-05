@@ -1,6 +1,6 @@
 #!/bin/sh
-#? SyncPi v0.1
-#? Automatically configure Raspberry Pi projects via SSH
+#? SyncPi v0.1.1
+#? SSH Project Synchronization for the Raspberry Pi
 #? Arniel Ceballos - aceba1@proton.me
 
 # region - Helper functions
@@ -39,7 +39,7 @@ ssh_command() {
 
 # region - Variables
 # Set local variables
-script_version="0.1"
+script_version="0.1.1"
 
 # Define colors
 color_blue=$(tput setaf 153)
@@ -185,7 +185,7 @@ if [ "$SKIP_SERVICE" != "true" ] && [ ! -e "$PATH_SERVICE_FILE" ]; then
 fi
 # endregion - Systemd service
 
-# region - Sync file paths
+# region - Sync paths
 if [ "$SKIP_FILESYNC" != "true" ] && [ ! -e "$PATH_SYNCPATHS_FILE" ]; then
 	if printf "%s\n" \
 		"# List of quoted file and folder paths to be synchronized, one pair per line" \
@@ -220,7 +220,7 @@ if [ "$SKIP_FILESYNC" != "true" ] && [ ! -e "$PATH_SYNCPATHS_FILE" ]; then
 
 	SKIP_FILESYNC=true
 fi
-# endregion - APT packages
+# endregion - Sync paths
 # endregion - Add configuration files
 
 # region - Setup connection
@@ -291,7 +291,6 @@ if [ "$SKIP_PACKAGES" != "true" ]; then
 		echo "$installed_packages" | grep --fixed-strings --line-regexp --quiet "${1%%=*}"
 	}
 
-	# region - Setup
 	# Get local and remote package lists
 	local_packages=$(read_without_comments "$PATH_PACKAGES_FILE" | grep --only-matching --extended-regexp '[^\s]+' | sort)
 	remote_packages=$(ssh_command "sudo cat '$REMOTE_PATH_PACKAGE_NOTE'" 2>/dev/null | sort)
@@ -304,7 +303,6 @@ if [ "$SKIP_PACKAGES" != "true" ]; then
 
 	packages_to_remove=$(comm -23 "$temppath_remote_packages" "$temppath_local_packages")
 	packages_to_install=$(comm -13 "$temppath_remote_packages" "$temppath_local_packages")
-	# endregion - Setup
 
 	# region - Synchronize
 	# Hold package list changes in variable
@@ -372,11 +370,11 @@ if [ "$SKIP_PACKAGES" != "true" ]; then
 		done
 		echo
 	fi
+	# endregion - Synchronize
 
 	# Completed
 	info "Done synchronizing packages!"
 	echo
-	# endregion - Synchronize
 
 	# Record changes to remote
 	ssh_command "sudo mkdir --parents $(dirname "$REMOTE_PATH_PACKAGE_NOTE")" >/dev/null
@@ -436,11 +434,11 @@ $CONFIG_BLOCK_END"
 
 		REBOOT_DEVICE=true
 	fi
+	# endregion - Synchronize
 
 	# Completed
 	info "Done synchronizing configuration!"
 	echo
-	# endregion - Synchronize
 fi
 # endregion - Sync firmware config
 
@@ -501,11 +499,11 @@ if [ "$SKIP_SERVICE" != "true" ]; then
 		info "Service has been installed!"
 		echo
 	fi
+	# endregion - Synchronize
 
 	# Completed
 	info "Done synchronizing service!"
 	echo
-	# endregion - Synchronize
 
 	# Record changes to remote
 	ssh_command "sudo mkdir --parents $(dirname "$REMOTE_PATH_SERVICE_NOTE")" >/dev/null
@@ -528,6 +526,7 @@ if [ "$SKIP_FILESYNC" != "true" ]; then
 			syncignore_path=
 		fi
 
+		# region - Synchronize
 		# Separate loop with the unique character
 		prev_ifs="$IFS"
 		IFS="*"
@@ -552,12 +551,13 @@ if [ "$SKIP_FILESYNC" != "true" ]; then
 		done
 		# Restore previous separator
 		IFS="$prev_ifs"
+		# endregion - Synchronize
 	fi
 
 	info "Done syncrhonizing filepaths!"
 	echo
 fi
-# endregion - Sync source and target folders
+# endregion - Sync file paths
 # endregion - Synchronization
 
 # region - Reboot device
