@@ -532,7 +532,7 @@ if [ "$SKIP_FILESYNC" != "true" ]; then
 		IFS="*"
 		for pair in $sync_pairs; do
 			# Separate sync paths from pair
-			source_path="${pair%%\"*}"
+			source_path="$FILESYNC_PATH/${pair%%\"*}"
 			remote_path="${pair##*\"}"
 			echo "  - $source_path => $remote_path"
 
