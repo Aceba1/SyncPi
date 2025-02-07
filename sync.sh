@@ -563,11 +563,15 @@ fi
 # region - Reboot device
 if [ "$SKIP_REBOOT_DEVICE" != "true" ] && [ "$REBOOT_DEVICE" = "true" ]; then
 	# Temporarily disable the service to avoid running it on reboot
-	is_enabled=$(ssh_command "systemctl is-enabled '$SERVICE_NAME.service'")
-	if [ "$is_enabled" = "enabled" ]; then
-		info "Disabling service '$SERVICE_NAME' for reboot..."
-		ssh_command "sudo systemctl disable '$SERVICE_NAME.service'"
-		echo
+	if [ "$SKIP_SERVICE" != "true" ]; then
+		is_enabled=$(ssh_command "systemctl is-enabled '$SERVICE_NAME.service'")
+		if [ "$is_enabled" = "enabled" ]; then
+			info "Disabling service '$SERVICE_NAME' for reboot..."
+			ssh_command "sudo systemctl disable '$SERVICE_NAME.service'"
+			echo
+		fi
+	else
+		is_enabled=
 	fi
 
 	info "Rebooting the remote device!"
