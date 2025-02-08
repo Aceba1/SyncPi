@@ -1,7 +1,8 @@
 #!/bin/sh
-#? SyncPi v0.1.1
+#? SyncPi v0.1.2
 #? SSH Project Synchronization for the Raspberry Pi
 #? Arniel Ceballos - aceba1@proton.me
+#? https://github.com/Aceba1/SyncPi
 
 # region - Helper functions
 temp_file() {
@@ -39,7 +40,7 @@ ssh_command() {
 
 # region - Variables
 # Set local variables
-script_version="0.1.1"
+script_version="0.1.2"
 
 # Define colors
 color_blue=$(tput setaf 153)
@@ -75,12 +76,18 @@ text_underline=$(tput smul)
 : "${WORKING_PATH:="$(dirname "$0")"}"
 
 # Load custom environment variables from .env file
-# shellcheck disable=SC1091
-if [ "$SKIP_ENV_FILE" != "true" ] && ! . "$WORKING_PATH/.env"; then
-	warn "Cannot find .env file!"
-	echo "  - Make a copy of the '.env.sample' file and rename it to '.env'"
-	echo "  - Set the values in there to connect to your device"
-	stop 1
+: "${ENV_PATH:="$WORKING_PATH/.env"}"
+
+# shellcheck disable=SC1090
+if [ "$SKIP_ENV_FILE" != "true" ]; then
+	if [ ! -e "$ENV_PATH" ]; then
+		warn "Cannot find '$(basename "$ENV_PATH")' file!"
+		echo "  - Make a copy of the '.env.sample' file and rename it to '$(basename "$ENV_PATH")'"
+		echo "  - Set the values in there to connect to your device"
+		stop 1
+	elif ! . "$ENV_PATH"; then
+		warn "Cannot read '$(basename "$ENV_PATH")' file!"
+	fi
 fi
 
 # Define dependent variables if unset
