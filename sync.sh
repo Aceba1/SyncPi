@@ -539,10 +539,16 @@ if [ "$SKIP_FILESYNC" != "true" ]; then
 		IFS="*"
 		for pair in $sync_pairs; do
 			# Separate sync paths from pair
-			source_path="$FILESYNC_PATH/${pair%%\"*}"
+			source_path="${pair%%\"*}"
 			remote_path="${pair##*\"}"
-			echo "  - $source_path => $remote_path"
 
+			# Prepend filesync path to source if root is not specified
+			case $source_path in
+			"/"*) ;;
+			*) source_path="$FILESYNC_PATH/$source_path" ;;
+			esac
+
+			echo "  - $source_path => $remote_path"
 			rsync \
 				--archive \
 				--chmod="$SYNC_CHMOD" \
