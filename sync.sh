@@ -621,8 +621,8 @@ fi
 # region - Start service
 if [ "$SKIP_SERVICE" != "true" ] && [ "$SKIP_SERVICE_START_AFTER_SCRIPT" != "true" ]; then
 	is_active=$(ssh_command "systemctl is-active '$SERVICE_NAME.service'")
-	# Start if the service is active
-	if [ "$is_active" = "inactive" ]; then
+	# Start if the service is inactive or failed
+	if [ "$is_active" != "active" ]; then
 		info "Starting service '$SERVICE_NAME'..."
 		ssh_command "sudo systemctl start '$SERVICE_NAME.service'"
 		echo
