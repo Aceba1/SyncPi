@@ -66,7 +66,7 @@ It uses SSH to synchronize settings, packages and directories to get a project u
 
 5. If requested, log in to the device to add your SSH public key
 
-   - If a public key hasn't been created yet, you can make a new one by running this command in the terminal:
+   - If a public key hasn't been created yet, you can make a new one by running this command in a new terminal:
 
      ```
      ssh-keygen -t rsa
@@ -78,7 +78,7 @@ Configuration files will be created in a `config/` folder next to the script. Th
 
 ### packages.ini
 
-Packages in this list will be installed on the remote device. Packages installed by this script will be removed if they are no longer in this list.
+Packages in this list will be installed via APT on the remote device. Packages installed by this script will be removed if they are no longer in this list.
 
 - To disable this feature, set envrionment `SKIP_PACKAGES` to `true`
 - To prevent automatically upgrading packages, set `SKIP_PACKAGES_UPGRADE` to `true`
@@ -86,14 +86,14 @@ Packages in this list will be installed on the remote device. Packages installed
 
 ### firmware.ini
 
-Content in this file will be added to the [`config.txt`](https://www.raspberrypi.com/documentation/computers/config_txt.html) file in the remote device. Modifications to this file will update the previously added content. Any changes to this file will trigger a restart.
+The content in this file will be added to the [`config.txt`](https://www.raspberrypi.com/documentation/computers/config_txt.html) file in the remote device. Modifications to this file will update the previously added content. Updates to the configuration will trigger a reboot to apply those changes.
 
 - To disable this feature, set envrionment `SKIP_FIRMWARE` to `true`
-- To prevent automatic restarts, set `SKIP_REBOOT_DEVICE` to `true`
+- To prevent automatic reboots, set `SKIP_REBOOT_DEVICE` to `true`
 
 ### service.ini
 
-The systemd service definition in this file will be copied over and registered to the remote device. Modifications to this service file will be updated in the registered service.
+The [systemd service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html) definition in this file will be copied over and registered to the remote device. Modifications to this service file will be updated in the registered service.
 
 The default service is configured to run `~/autostart` after a normal reboot.
 
