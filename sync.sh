@@ -1,5 +1,5 @@
 #!/bin/sh
-#? SyncPi v0.1.3
+#? SyncPi v0.1.4
 #? SSH Project Synchronization for the Raspberry Pi
 #? Arniel Ceballos - aceba1@proton.me
 #? https://github.com/Aceba1/SyncPi
@@ -40,7 +40,7 @@ ssh_command() {
 
 # region - Variables
 # Set local variables
-script_version="0.1.3"
+script_version="0.1.4"
 
 # Define colors
 color_blue=$(tput setaf 153)
@@ -265,7 +265,7 @@ if [ "$SKIP_SERVICE" != "true" ] && [ "$SKIP_SERVICE_STOP_BEFORE_SCRIPT" != "tru
 		# Stop if the service is active
 		if [ "$is_active" = "active" ]; then
 			info "Stopping service '$remote_service_name'..."
-			ssh_command "sudo systemctl start '$remote_service_name.service'"
+			ssh_command "sudo systemctl stop '$remote_service_name.service'"
 			echo
 		fi
 	fi
