@@ -1,12 +1,12 @@
 #!/bin/sh
-#? SyncPi v0.1.4
+#? SyncPi v0.1.5
 #? SSH Project Synchronization for the Raspberry Pi
 #? Arniel Ceballos - aceba1@proton.me
 #? https://github.com/Aceba1/SyncPi
 
 # region - Variables
 # Set local variables
-script_version="0.1.4"
+script_version="0.1.5"
 
 # Define colors
 color_blue=$(tput setaf 153)
