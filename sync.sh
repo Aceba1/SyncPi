@@ -283,7 +283,7 @@ if [ "$SKIP_PACKAGES" != "true" ]; then
 	# Upgrade packages
 	if [ "$SKIP_PACKAGES_UPGRADE" != "true" ]; then
 		info "Upgrading packages..."
-		ssh_command "sudo apt-get --quiet upgrade --yes"
+		ssh_command "sudo apt-get --quiet full-upgrade --yes"
 		echo
 	fi
 
