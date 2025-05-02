@@ -4,40 +4,6 @@
 #? Arniel Ceballos - aceba1@proton.me
 #? https://github.com/Aceba1/SyncPi
 
-# region - Helper functions
-temp_file() {
-	mkdir --parents "$WORKING_PATH/.tmp/"
-	mktemp --quiet "$WORKING_PATH/.tmp/$1.XXXX"
-}
-
-temp_clear() {
-	if [ "$KEEP_TEMP" != "true" ]; then
-		rm --recursive --force --dir "$WORKING_PATH/.tmp/"
-	fi
-}
-
-stop() {
-	temp_clear
-	exit "$1"
-}
-
-info() {
-	echo "$color_blue$1$color_white"
-}
-
-warn() {
-	echo "$color_yellow$1$color_white"
-}
-
-read_without_comments() {
-	sed "s/#.*\$//g" "$1"
-}
-
-ssh_command() {
-	ssh -o BatchMode=true "$SSH_USER@$SSH_SERVER" "$1"
-}
-# endregion - Helper functions
-
 # region - Variables
 # Set local variables
 script_version="0.1.4"
@@ -100,6 +66,40 @@ fi
 : "${PATH_SYNCIGNORE_FILE:="$PATH_CONFIG_DIR/syncignore.ini"}"
 : "${PATH_SYNCPATHS_FILE:="$PATH_CONFIG_DIR/syncpaths.ini"}"
 # endregion - Variables
+
+# region - Helper functions
+temp_file() {
+	mkdir --parents "$WORKING_PATH/.tmp/"
+	mktemp --quiet "$WORKING_PATH/.tmp/$1.XXXX"
+}
+
+temp_clear() {
+	if [ "$KEEP_TEMP" != "true" ]; then
+		rm --recursive --force --dir "$WORKING_PATH/.tmp/"
+	fi
+}
+
+stop() {
+	temp_clear
+	exit "$1"
+}
+
+info() {
+	echo "$color_blue$1$color_white"
+}
+
+warn() {
+	echo "$color_yellow$1$color_white"
+}
+
+read_without_comments() {
+	sed "s/#.*\$//g" "$1"
+}
+
+ssh_command() {
+	ssh -o BatchMode=true "$SSH_USER@$SSH_SERVER" "$1"
+}
+# endregion - Helper functions
 
 # Begin script!
 info "SyncPi v$script_version"
