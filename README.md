@@ -80,7 +80,7 @@ Configuration files will be created in a `config/` folder next to the script. Th
 
 Packages in this list will be installed via APT on the remote device. Packages installed by this script will be removed if they are no longer in this list.
 
-- To disable this feature, set envrionment `SKIP_PACKAGES` to `true`
+- To disable this feature, set environment `SKIP_PACKAGES` to `true`
 - To prevent automatically upgrading packages, set `SKIP_PACKAGES_UPGRADE` to `true`
 - To prevent removing previously installed packages, set `SKIP_PACKAGES_REMOVAL` to `true`
 
@@ -88,7 +88,7 @@ Packages in this list will be installed via APT on the remote device. Packages i
 
 The content in this file will be added to the [`config.txt`](https://www.raspberrypi.com/documentation/computers/config_txt.html) file in the remote device. Modifications to this file will update the previously added content. Updates to the configuration will trigger a reboot to apply those changes.
 
-- To disable this feature, set envrionment `SKIP_FIRMWARE` to `true`
+- To disable this feature, set environment `SKIP_FIRMWARE` to `true`
 - To prevent automatic reboots, set `SKIP_REBOOT_DEVICE` to `true`
 
 ### service.ini
@@ -98,7 +98,7 @@ The [systemd service](https://www.freedesktop.org/software/systemd/man/latest/sy
 The default service is configured to run `~/autostart` after a normal reboot.
 
 - Set environment `SERVICE_NAME` to change the default name (defaults to `startup`)
-- To disable this feature, set envrionment `SKIP_SERVICE` to `true`
+- To disable this feature, set environment `SKIP_SERVICE` to `true`
 - To prevent the service from stopping, set `SKIP_SERVICE_STOP_BEFORE_SCRIPT` to `true`
 - To prevent the service from restarting, set `SKIP_SERVICE_START_AFTER_SCRIPT` to `true`
 
@@ -108,7 +108,7 @@ Targeted files and folders in the project will be uploaded using [rsync](https:/
 
 - Set environment `SYNC_CHMOD` to change the default permissions (defaults to `D755,F755`)
 - Set environment `SYNC_CHOWN` to change the default owning user (defaults to the SSH user)
-- To disable this feature, set envrionment `SKIP_FILESYNC` to `true`
+- To disable this feature, set environment `SKIP_FILESYNC` to `true`
 
 ### syncignore.ini
 
